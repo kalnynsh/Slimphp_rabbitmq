@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Api\Model\User\UseCase\SignUp\Request\Handler;
 use Api\Model\User\UseCase\SignUp\Request\Command;
 use Api\Http\Validator\Validator;
+use Api\Http\Exception\ValidationException;
 
 class RequestAction implements RequestHandlerInterface
 {
@@ -35,7 +36,7 @@ class RequestAction implements RequestHandlerInterface
         $command->password = $body['password'] ?? '';
 
         if ($errors = $this->validator->validate($command)) {
-            return new JsonResponse(['errors' => $errors->toArray()], 400);
+            throw new ValidationException($errors);
         }
 
         $this->handler->handle($command);

@@ -30,6 +30,10 @@ return [
         return new Middleware\DomainExceptionMiddleware();
     },
 
+    Middleware\ValidationExceptionMiddleware::class => function () {
+        return new Middleware\ValidationExceptionMiddleware();
+    },
+
     Action\HomeAction::class => function () {
         return new Action\HomeAction();
     },

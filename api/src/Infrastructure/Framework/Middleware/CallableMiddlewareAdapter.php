@@ -20,8 +20,11 @@ class CallableMiddlewareAdapter
         $this->middleware = $middleware;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ): ResponseInterface {
         /** @var MiddlewareInterface $middleware */
         $middleware = $this->container->get($this->middleware);
 
