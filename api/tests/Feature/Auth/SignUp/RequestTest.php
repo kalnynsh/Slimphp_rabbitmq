@@ -72,7 +72,7 @@ class RequestTest extends WebTestCase
         self::assertEquals([
             'errors' => [
                 'email' => 'This value is not a valid email address.',
-                'password' => 'This value is too short. It should be 6 characters or more',
+                'password' => 'This value is too short. It should have 6 characters or more.',
             ],
         ], $data);
     }

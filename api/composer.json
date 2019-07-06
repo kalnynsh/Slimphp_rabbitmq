@@ -8,10 +8,13 @@
         "ext-mbstring": "^7.1",
         "doctrine/migrations": "^1.8",
         "doctrine/orm": "^2.6",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
         "ramsey/uuid": "^3.8",
         "slim/slim": "^3.11",
         "symfony/console": "^4.1",
         "symfony/dotenv": "^4.1",
+        "symfony/validator": "^4.1",
         "zendframework/zend-config-aggregator": "^1.1",
         "zendframework/zend-diactoros": "^2.0"
     },
