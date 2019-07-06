@@ -26,6 +26,10 @@ return [
         );
     },
 
+    Middleware\BodyParamsMiddleware::class => function () {
+        return new Middleware\BodyParamsMiddleware();
+    },
+
     Middleware\DomainExceptionMiddleware::class => function () {
         return new Middleware\DomainExceptionMiddleware();
     },
