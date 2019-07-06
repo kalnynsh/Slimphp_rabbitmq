@@ -17,7 +17,7 @@ class ConfirmFixture extends AbstractFixture
     {
         $user = new User(
             UserId::next(),
-            $now = new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             new Email('confirm@example.com'),
             'password_hash',
             new ConfirmToken('token', new \DateTimeImmutable('+1 day'))
@@ -27,7 +27,7 @@ class ConfirmFixture extends AbstractFixture
 
         $expired = new User(
             UserId::next(),
-            $now = new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             new Email('expired@example.com'),
             'password_hash',
             new ConfirmToken('token', new \DateTimeImmutable('-1 day'))

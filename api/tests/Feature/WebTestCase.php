@@ -55,30 +55,37 @@ class WebTestCase extends TestCase
 
     protected function loadFixtures(array $fixtures): void
     {
-        $container = $this->container();
+        $container = $this->fetchContainer();
         $em = $container->get(EntityManagerInterface::class);
         $loader = new Loader();
+
         foreach ($fixtures as $class) {
             if ($container->has($class)) {
                 $fixture = $container->get($class);
-            } else {
+            }
+
+            if (!$container->has($class)) {
                 $fixture = new $class;
             }
+
             $loader->addFixture($fixture);
         }
+
         $executor = new ORMExecutor($em, new ORMPurger($em));
         $executor->execute($loader->getFixtures());
     }
 
     private function app(): App
     {
-        $container = $this->container();
+        $container = $this->fetchContainer();
         $app = new App($container);
+
         (require 'config/routes.php')($app, $container);
+
         return $app;
     }
 
-    private function container(): ContainerInterface
+    private function fetchContainer(): ContainerInterface
     {
         return require 'config/container.php';
     }

@@ -56,4 +56,24 @@ class RequestTest extends WebTestCase
             'error' => 'User with this email already exists.',
         ], $data);
     }
+
+    public function testNotValid(): void
+    {
+        $response = $this->post('/auth/signup', [
+            'email' => 'incorrect-email',
+            'password' => 'short',
+        ]);
+
+        self::assertEquals(400, $response->getStatusCode());
+        self::assertJson($content = $response->getBody()->getContents());
+
+        $data = json_decode($content, true);
+
+        self::assertEquals([
+            'errors' => [
+                'email' => 'This value is not a valid email address.',
+                'password' => 'This value is too short. It should be 6 characters or more',
+            ],
+        ], $data);
+    }
 }
