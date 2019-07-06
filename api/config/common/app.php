@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Validation;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Api\Model;
+use Api\Http\Validator\Validator;
 use Api\Http\Middleware;
 use Api\Http\Action;
 
@@ -17,6 +18,12 @@ return [
         return Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
             ->getValidator();
+    },
+
+    Validator::class => function (ContainerInterface $container) {
+        return new Validator(
+            $container->get(ValidatorInterface::class)
+        );
     },
 
     Middleware\DomainExceptionMiddleware::class => function () {
@@ -30,14 +37,14 @@ return [
     Action\Auth\SignUp\RequestAction::class => function (ContainerInterface $container) {
         return new Action\Auth\SignUp\RequestAction(
             $container->get(Model\User\UseCase\SignUp\Request\Handler::class),
-            $container->get(ValidatorInterface::class)
+            $container->get(Validator::class)
         );
     },
 
     Action\Auth\SignUp\ConfirmAction::class => function (ContainerInterface $container) {
         return new Action\Auth\SignUp\ConfirmAction(
             $container->get(Model\User\UseCase\SignUp\Confirm\Handler::class),
-            $container->get(ValidatorInterface::class)
+            $container->get(Validator::class)
         );
     },
 ];
