@@ -66,6 +66,7 @@ class User
         if ($this->isActive()) {
             throw new \DomainException('User is already active.');
         }
+
         $this->confirmToken->validate($token, $date);
         $this->status = self::STATUS_ACTIVE;
         $this->confirmToken = null;
