@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Api\Model\User\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
+use Api\Model\AggregateRoot;
+use Api\Model\EventTrait;
+use Api\Model\User\Entity\User\Event\UserCreated;
+use Api\Model\User\Entity\User\Event\UserConfirmed;
 
 /**
  * @ORM\Entity
@@ -13,8 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(columns={"email"})
  * })
  */
-class User
+class User implements AggregateRoot
 {
+    use EventTrait;
+
     private const STATUS_WAIT = 'wait';
     private const STATUS_ACTIVE = 'active';
 
@@ -51,14 +57,19 @@ class User
         Email $email,
         string $hash,
         ConfirmToken $confirmToken
-    )
-    {
+    ) {
         $this->id = $id;
         $this->date = $date;
         $this->email = $email;
         $this->passwordHash = $hash;
         $this->confirmToken = $confirmToken;
         $this->status = self::STATUS_WAIT;
+
+        $this->recordEvent(new UserCreated(
+            $this->id,
+            $this->email,
+            $this->confirmToken
+        ));
     }
 
     public function confirmSignup(string $token, \DateTimeImmutable $date): void
@@ -70,6 +81,10 @@ class User
         $this->confirmToken->validate($token, $date);
         $this->status = self::STATUS_ACTIVE;
         $this->confirmToken = null;
+
+        $this->recordEvent(
+            new UserConfirmed($this->id)
+        );
     }
 
     public function isWait(): bool
