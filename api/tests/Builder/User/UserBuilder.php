@@ -61,6 +61,14 @@ class UserBuilder
         return $clone;
     }
 
+    public function withPasswordHash(string $hash): self
+    {
+        $clone = clone $this;
+        $clone->hash = $hash;
+
+        return $clone;
+    }
+
     public function build(): User
     {
         return new User(

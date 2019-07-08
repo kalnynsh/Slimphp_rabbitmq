@@ -20,23 +20,37 @@ use Zend\Diactoros\Uri;
 
 class WebTestCase extends TestCase
 {
-    protected function get(string $uri): ResponseInterface
-    {
-        return $this->method($uri, 'GET');
+    protected function get(
+        string $uri,
+        array $headers = []
+    ): ResponseInterface {
+        return $this->method(
+            $uri,
+            'GET',
+            [],
+            $headers
+        );
     }
 
-    protected function post(string $uri, array $params = []): ResponseInterface
-    {
-        return $this->method($uri, 'POST', $params);
+    protected function post(
+        string $uri,
+        array $params = [],
+        array $headers = []
+    ): ResponseInterface {
+        return $this->method($uri, 'POST', $params, $headers);
     }
 
-    protected function method(string $uri, $method, array $params = []): ResponseInterface
-    {
+    protected function method(
+        string $uri,
+        $method,
+        array $params = [],
+        array $headers = []
+    ): ResponseInterface {
         $body = new Stream('php://temp', 'r+');
         $body->write(json_encode($params));
         $body->rewind();
 
-        return $this->request(
+        $request = (
             (new ServerRequest())
                 ->withHeader('Content-Type', 'application/json')
                 ->withHeader('Accept', 'application/json')
@@ -44,12 +58,19 @@ class WebTestCase extends TestCase
                 ->withMethod($method)
                 ->withBody($body)
         );
+
+        foreach ($headers as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
+
+        return $this->request($request);
     }
 
     protected function request(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->app()->process($request, new Response());
         $response->getBody()->rewind();
+
         return $response;
     }
 
