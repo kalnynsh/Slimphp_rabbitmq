@@ -19,14 +19,14 @@ class CreatedListener
         $this->from = $from;
     }
 
-    public function __invoke(UserCreated $vent)
+    public function __invoke(UserCreated $event)
     {
         $message = (new \Swift_Message('Signup confirmation'))
             ->setFrom($this->from)
-            ->setTo($vent->email->getEmail())
+            ->setTo($event->email->getEmail())
             ->setBody(
                 'Token: '
-                . $vent->confirmToken->getToken()
+                . $event->confirmToken->getToken()
             )
         ;
 
