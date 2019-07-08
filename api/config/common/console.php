@@ -4,7 +4,7 @@ return [
     'config' => [
         'console' => [
             'commands' => [
-
+                //
             ],
         ],
     ],

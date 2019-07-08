@@ -11,7 +11,7 @@ return [
     LoggerInterface::class => function (ContainerInterface $container) {
         $config = $container->get('config')['logger'];
         $logger = new \Monolog\Logger('API');
-        $logger->pushHandler(new \Monolog\Handler\SteamHandler($config['file']));
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler($config['file']));
 
         return $logger;
     },
