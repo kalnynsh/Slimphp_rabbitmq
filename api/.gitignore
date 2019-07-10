@@ -1,3 +1,10 @@
 /vendor
 /.env.*.local
 /.env.local
+/.env
+
+/public.key
+/private.key
+
+/tests/data/public.key
+/tests/data/private.key

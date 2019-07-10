@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Validation;
+use Psr\Log\LoggerInterface;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Api\Model;
@@ -53,6 +54,13 @@ return [
         return new Action\Auth\SignUp\ConfirmAction(
             $container->get(Model\User\UseCase\SignUp\Confirm\Handler::class),
             $container->get(Validator::class)
+        );
+    },
+
+    Action\Auth\OAuthAction::class => function (ContainerInterface $container) {
+        return new  Action\Auth\OAuthAction(
+            $container->get(\League\OAuth2\Server\AuthorizationServer::class),
+            $container->get(LoggerInterface::class)
         );
     },
 ];

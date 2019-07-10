@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Framework\ErrorHandler;
 
-use Slim\Handlers\Error;
+use Slim\Handlers\PhpError;
 use Psr\Log\LoggerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class LogPhpHandler extends Error
+class LogPhpHandler extends PhpError
 {
     protected $logger;
 
