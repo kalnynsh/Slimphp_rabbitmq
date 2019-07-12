@@ -11,7 +11,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+// `@` is an alias to /src
 import ApiStatus from '@/components/ApiStatus.vue'
 
 export default {

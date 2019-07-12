@@ -22,9 +22,27 @@ axios.interceptors.response.use(null, error => {
     return Promise.reject(error);
   }
 
-  router.push({name: 'login'});
+  const request = error.config;
 
-  return Promise.reject(error);
+  if (request.data) {
+    let data = JSON.parse(request.data);
+
+    if (data && data.grant_type) {
+      return Promise.reject(error);
+    }
+  }
+
+  return store.dispatch('refresh')
+    .then(() => {
+      return new Promise((resolve) => {
+        request.headers['Authorization'] = 'Bearer ' + store.state.user.access_token;
+        resolve(axios(request));
+      });
+    })
+    .catch(() => {
+      router.push({name: 'login'});
+      return Promise.reject(error);
+    });
 });
 
 new Vue({
