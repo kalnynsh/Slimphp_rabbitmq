@@ -30,13 +30,13 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     }
 
     public function persistNewRefreshToken(
-        RefreshTokenEntityInterface $accessTokenEntity
+        RefreshTokenEntityInterface $refreshTokenEntity
     ): void {
-        if ($this->exists($accessTokenEntity->getIdentifier())) {
+        if ($this->exists($refreshTokenEntity->getIdentifier())) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
         }
 
-        $this->em->persist($accessTokenEntity);
+        $this->em->persist($refreshTokenEntity);
         $this->em->flush();
     }
 

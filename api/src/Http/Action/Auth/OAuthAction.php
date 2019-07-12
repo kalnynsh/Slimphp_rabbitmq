@@ -40,6 +40,11 @@ class OAuthAction implements RequestHandlerInterface
 
             return $exception->generateHttpResponse(new Response());
         } catch (\Exception $exception) {
+            $this->logger->warning(
+                $exception->getMessage(),
+                ['exception' => $exception]
+            );
+
             return (new OAuthServerException(
                 $exception->getMessage(),
                 0,

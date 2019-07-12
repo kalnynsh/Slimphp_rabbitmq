@@ -58,7 +58,7 @@ return [
     },
 
     Action\Auth\OAuthAction::class => function (ContainerInterface $container) {
-        return new  Action\Auth\OAuthAction(
+        return new Action\Auth\OAuthAction(
             $container->get(\League\OAuth2\Server\AuthorizationServer::class),
             $container->get(LoggerInterface::class)
         );

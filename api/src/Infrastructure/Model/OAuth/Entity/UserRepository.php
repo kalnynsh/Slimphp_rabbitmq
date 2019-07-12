@@ -38,7 +38,7 @@ class UserRepository implements UserRepositoryInterface
         $password,
         $grantType,
         ClientEntityInterface $clientEntity
-    ): UserEntityInterface {
+    ): ?UserEntityInterface {
         /** @var User $user */
         if ($user = $this->repo->findOneBy(['email' => $username])) {
             if (!$this->hasher->validate($password, $user->getPasswordHash())) {

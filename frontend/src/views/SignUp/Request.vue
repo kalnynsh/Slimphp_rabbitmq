@@ -90,7 +90,8 @@
                                 this.errors = error.response.data.errors;
                             }
                         } else {
-                            console.log(error.message);
+                            // console.log(error.message);
+                            alert(error.message);
                         }
                     });
             }

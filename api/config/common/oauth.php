@@ -16,6 +16,7 @@ return [
             $clientRepository = $container->get(Server\Repositories\ClientRepositoryInterface::class);
             $scopeRepository = $container->get(Server\Repositories\ScopeRepositoryInterface::class);
             $accessTokenRepository = $container->get(Server\Repositories\AccessTokenRepositoryInterface::class);
+
             $authCodeRepository = $container->get(Server\Repositories\AuthCodeRepositoryInterface::class);
             $refreshTokenRepository = $container->get(Server\Repositories\RefreshTokenRepositoryInterface::class);
             $userRepository = $container->get(Server\Repositories\UserRepositoryInterface::class);
@@ -35,7 +36,6 @@ return [
             );
 
             $server->enableGrantType($grant, new \DateInterval('PT1H'));
-
             $server->enableGrantType(
                 new Server\Grant\ClientCredentialsGrant(),
                 new \DateInterval('PT1H')
@@ -53,57 +53,50 @@ return [
             $grant->setRefreshTokenTTL(new \DateInterval('P1M'));
             $server->enableGrantType($grant, new \DateInterval('PT1H'));
 
-            $grant = new Server\Grant\RefreshTokenGrant(
-                $refreshTokenRepository
-            );
-
+            $grant = new Server\Grant\RefreshTokenGrant($refreshTokenRepository);
             $grant->setRefreshTokenTTL(new \DateInterval('P1M'));
             $server->enableGrantType($grant, new \DateInterval('PT1H'));
+
+            return $server;
         },
 
-    Server\ResourceServer::class => function (ContainerInterface $container) {
-        $config = $container->get('config')['oauth'];
+        Server\ResourceServer::class => function (ContainerInterface $container) {
+            $config = $container->get('config')['oauth'];
+            $accessTokenRepository = $container->get(
+                Server\Repositories\AccessTokenRepositoryInterface::class
+            );
 
-        $accessTokenRepository = $container->get(
-            Server\Repositories\AccessTokenRepositoryInterface::class
-        );
+            return new Server\ResourceServer(
+                $accessTokenRepository,
+                new Server\CryptKey($config['public_key_path'], null, false)
+            );
+        },
 
-        return new Server\ResourceServer(
-            $accessTokenRepository,
-            new Server\CryptKey($config['public_key_path'], null, false)
-        );
-    },
-
-    Server\Middleware\ResourceServerMiddleware::class =>
+        Server\Middleware\ResourceServerMiddleware::class =>
         function (ContainerInterface $container) {
             return new Server\Middleware\ResourceServerMiddleware(
                 $container->get(Server\ResourceServer::class)
             );
         },
 
-    Server\Repositories\ClientRepositoryInterface::class =>
+        Server\Repositories\ClientRepositoryInterface::class =>
         function (ContainerInterface $container) {
             $config = $container->get('config')['oauth'];
-
-            return new Infrastructure\Entity\ClientRepository(
-                $config['clients']
-            );
+            return new Infrastructure\Entity\ClientRepository($config['clients']);
         },
 
-    Server\Repositories\ScopeRepositoryInterface::class =>
-        function () {
+        Server\Repositories\ScopeRepositoryInterface::class => function () {
             return new Infrastructure\Entity\ScopeRepository();
         },
 
-
-    Server\Repositories\AuthCodeRepositoryInterface::class =>
+        Server\Repositories\AuthCodeRepositoryInterface::class =>
         function (ContainerInterface $container) {
             return new Infrastructure\Entity\AuthCodeRepository(
                 $container->get(EntityManagerInterface::class)
             );
         },
 
-    Server\Repositories\AccessTokenRepositoryInterface::class =>
+        Server\Repositories\AccessTokenRepositoryInterface::class =>
         function (ContainerInterface $container) {
             return new Infrastructure\Entity\AccessTokenRepository(
                 $container->get(EntityManagerInterface::class)
@@ -117,7 +110,7 @@ return [
             );
         },
 
-    Server\Repositories\UserRepositoryInterface::class =>
+        Server\Repositories\UserRepositoryInterface::class =>
         function (ContainerInterface $container) {
             return new Infrastructure\Entity\UserRepository(
                 $container->get(EntityManagerInterface::class),

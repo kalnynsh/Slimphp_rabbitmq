@@ -20,6 +20,8 @@ use Zend\Diactoros\Uri;
 
 class WebTestCase extends TestCase
 {
+    private $fixtures = [];
+
     protected function get(
         string $uri,
         array $headers = []
@@ -80,7 +82,7 @@ class WebTestCase extends TestCase
         $em = $container->get(EntityManagerInterface::class);
         $loader = new Loader();
 
-        foreach ($fixtures as $class) {
+        foreach ($fixtures as $name => $class) {
             if ($container->has($class)) {
                 $fixture = $container->get($class);
             }
@@ -90,10 +92,20 @@ class WebTestCase extends TestCase
             }
 
             $loader->addFixture($fixture);
+            $this->fixtures[$name] = $fixture;
         }
 
         $executor = new ORMExecutor($em, new ORMPurger($em));
         $executor->execute($loader->getFixtures());
+    }
+
+    protected function getFixture($name)
+    {
+        if (!array_key_exists($name, $this->fixtures)) {
+            throw new \InvalidArgumentException('Undefined fixture '. $name);
+        }
+
+        return $this->fixtures[$name];
     }
 
     private function app(): App
