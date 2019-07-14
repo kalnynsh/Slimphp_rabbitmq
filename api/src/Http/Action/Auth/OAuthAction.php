@@ -49,7 +49,8 @@ class OAuthAction implements RequestHandlerInterface
                 $exception->getMessage(),
                 0,
                 'unknown_error',
-                500
+                500,
+                'OAuth server unknown error'
             ))->generateHttpResponse(new Response());
         }
     }

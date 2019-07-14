@@ -40,6 +40,7 @@ return [
             'metadata_dirs' => [
                 'src/Model/User/Entity',
                 'src/Model/OAuth/Entity',
+                'src/Model/Video/Entity',
             ],
             'connection' => [
                 'url' => getenv('API_DB_URL'),

@@ -1,6 +1,6 @@
 <?php
 
-declare(stric_types=1);
+declare(strict_types=1);
 
 namespace Api\Infrastructure\Doctrine\Type\Video;
 
