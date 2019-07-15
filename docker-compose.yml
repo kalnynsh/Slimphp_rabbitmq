@@ -9,7 +9,7 @@ services:
         depends_on:
             - api-php-fpm
         ports:
-            - "8080:80"
+            - "8090:80"
 
     frontend-nodejs:
         image: node:10.11-jessie
@@ -25,7 +25,7 @@ services:
         volumes:
             - ./api:/var/www/api
         ports:
-            - "8081:80"
+            - "8091:80"
 
     api-php-fpm:
         build:
@@ -65,4 +65,4 @@ services:
         restart: unless-stopped
         ports:
             - "1025:1025"
-            - "8082:8025"
+            - "8092:8025"

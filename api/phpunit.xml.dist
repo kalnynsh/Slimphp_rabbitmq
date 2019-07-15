@@ -4,6 +4,9 @@
          bootstrap="tests/bootstrap.php"
          colors="true">
     <testsuites>
+        <testsuite name="integration">
+            <directory>./tests/Integration</directory>
+        </testsuite>
         <testsuite name="feature">
             <directory>./tests/Feature</directory>
         </testsuite>
