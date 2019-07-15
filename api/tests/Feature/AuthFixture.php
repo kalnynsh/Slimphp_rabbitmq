@@ -50,6 +50,8 @@ class AuthFixture extends AbstractFixture
 
         $manager->flush();
 
+        $this->addReference('user', $user);
+
         $this->token = (string)$token->convertToJWT(CryptKeyHelper::get());
     }
 
@@ -58,7 +60,7 @@ class AuthFixture extends AbstractFixture
         return $this->user;
     }
 
-    public function getAuthHeader(): array
+    public function getHeaders(): array
     {
         return [
             'Authorization' => 'Bearer ' . $this->token,

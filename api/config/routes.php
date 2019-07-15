@@ -26,4 +26,8 @@ return function (App $app, ContainerInterface $container) {
     $app->group('/profile', function () {
         $this->get('', Action\Profile\ShowAction::class . ':handle');
     })->add($auth);
+
+    $app->group('/author', function () {
+        $this->get('', Action\Author\ShowAction::class . ':handle');
+    })->add($auth);
 };
