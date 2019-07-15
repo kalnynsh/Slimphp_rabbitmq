@@ -5,7 +5,9 @@ declare(strict_types=1);
 use Psr\Container\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Api\ReadModel;
+use Api\Model\Video as VideoModel;
 use Api\Model\User as UserModel;
+use Api\Infrastructure\Model\Video as VideoInfrastructure;
 use Api\Infrastructure\Model\User as UserInfrastructure;
 use Api\Infrastructure;
 
@@ -60,8 +62,21 @@ return [
         );
     },
 
+    VideoModel\UseCase\Author\Create\Handler::class  => function (ContainerInterface $container) {
+        return new VideoModel\UseCase\Author\Create\Handler(
+            $container->get(VideoModel\Entity\Author\AuthorRepository::class),
+            $container->get(Api\Model\Flusher::class)
+        );
+    },
+
     ReadModel\Video\AuthorReadRepository::class => function (ContainerInterface $container) {
         return new Infrastructure\ReadModel\Video\DoctrineAuthorReadRepository(
+            $container->get(\Doctrine\ORM\EntityManagerInterface::class)
+        );
+    },
+
+    VideoModel\Entity\Author\AuthorRepository::class => function (ContainerInterface $container) {
+        return new VideoInfrastructure\Entity\DoctrineAuthorRepository(
             $container->get(\Doctrine\ORM\EntityManagerInterface::class)
         );
     },
