@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Infrastructure\Model\Service\Processor\FormatDetector;
+namespace Api\Infrastructure\Model\Video\Service\Processor\FormatDetector;
 
 use Api\Model\Video\Service\Processor\Video;
 use Api\Model\Video\Service\Processor\Size;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Api\Test\Integration\Infastructure\Model\Video\Service\FormatDetector;
 
 use PHPUnit\Framework\TestCase;
-use Api\Infrastructure\Model\Service\Processor\FormatDetector\FFProbeFormatDetector;
+use Api\Infrastructure\Model\Video\Service\Processor\FormatDetector\FFProbeFormatDetector;
 
 class FFProbeFormatDetectorTest extends TestCase
 {

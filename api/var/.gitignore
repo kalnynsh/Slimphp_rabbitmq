@@ -5,4 +5,5 @@
 !log/.gitkeep
 !mail
 !mail/.gitkeep
+!test/.gitkeep
 !.gitignore
