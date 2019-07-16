@@ -14,8 +14,13 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"><router-link class="nav-link" :to="{name: 'home'}">Home</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" :to="{name: 'about'}">About</router-link></li>
           <template v-if="$store.getters.isLoggedIn">
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{name: 'profile'}">Profile</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{name: 'author'}">Author</router-link>
+            </li>
             <li class="nav-item">
               <a href="" class="nav-link" @click="logout">Log Out</a>
             </li>
