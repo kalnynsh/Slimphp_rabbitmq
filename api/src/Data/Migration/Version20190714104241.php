@@ -51,21 +51,6 @@ final class Version20190714104241 extends AbstractMigration
         $this->addSql('CREATE TABLE video_authors (id UUID NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE video_videos ADD CONSTRAINT FK_11FDC4FFF675F31B FOREIGN KEY (author_id) REFERENCES video_authors (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE video_video_files ADD CONSTRAINT FK_ABD5F85A29C1004E FOREIGN KEY (video_id) REFERENCES video_videos (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE user_users ALTER id TYPE UUID');
-        $this->addSql('ALTER TABLE user_users ALTER id DROP DEFAULT');
-        $this->addSql('ALTER TABLE user_users ALTER email TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE user_users ALTER email DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER client TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER client DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER scopes TYPE JSON');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER scopes DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER client TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER client DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER scopes TYPE JSON');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER scopes DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_refresh_tokens DROP CONSTRAINT fk_5ab6878e5675dc');
-        $this->addSql('DROP INDEX idx_5ab6878e5675dc');
-        $this->addSql('ALTER TABLE oauth_refresh_tokens DROP access_token_identifier');
     }
 
     public function down(Schema $schema) : void
@@ -79,20 +64,5 @@ final class Version20190714104241 extends AbstractMigration
         $this->addSql('DROP TABLE video_videos');
         $this->addSql('DROP TABLE video_video_files');
         $this->addSql('DROP TABLE video_authors');
-        $this->addSql('ALTER TABLE user_users ALTER id TYPE UUID');
-        $this->addSql('ALTER TABLE user_users ALTER id DROP DEFAULT');
-        $this->addSql('ALTER TABLE user_users ALTER email TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE user_users ALTER email DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER client TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER client DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER scopes TYPE JSON');
-        $this->addSql('ALTER TABLE oauth_auth_codes ALTER scopes DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER client TYPE VARCHAR(255)');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER client DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER scopes TYPE JSON');
-        $this->addSql('ALTER TABLE oauth_access_tokens ALTER scopes DROP DEFAULT');
-        $this->addSql('ALTER TABLE oauth_refresh_tokens ADD access_token_identifier VARCHAR(80) NOT NULL');
-        $this->addSql('ALTER TABLE oauth_refresh_tokens ADD CONSTRAINT fk_5ab6878e5675dc FOREIGN KEY (access_token_identifier) REFERENCES oauth_access_tokens (identifier) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('CREATE INDEX idx_5ab6878e5675dc ON oauth_refresh_tokens (access_token_identifier)');
     }
 }
