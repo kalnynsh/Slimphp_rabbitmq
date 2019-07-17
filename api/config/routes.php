@@ -30,5 +30,6 @@ return function (App $app, ContainerInterface $container) {
     $app->group('/author', function () {
         $this->get('', Action\Author\ShowAction::class . ':handle');
         $this->post('/create', Action\Author\CreateAction::class . ':handle');
+        $this->post('/videos/create', Action\Author\Video\CreateAction::class . ':handle');
     })->add($auth);
 };

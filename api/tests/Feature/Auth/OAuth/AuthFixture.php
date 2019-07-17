@@ -18,7 +18,7 @@ class AuthFixture extends AbstractFixture
             (new UserBuilder())
             ->withDate($now = new \DateTimeImmutable())
             ->withEmail(new Email('oauth@example.com'))
-            ->withPasswordHash('$2y$12$qwnND33o8DGWvFoepotSju7eTAQ6gzLD/zy6W8NCVtiHPbkybz.w6') // 'password'
+            ->withPasswordHash('$2y$12$qwnND33o8DGWvFoepotSju7eTAQ6gzLD/zy6W8NCVtiHPbkybz.w6')
             ->withConfirmToken(
                 new ConfirmToken(
                     $token = 'token',

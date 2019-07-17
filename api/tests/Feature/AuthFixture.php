@@ -11,8 +11,8 @@ use Api\Model\User\Entity\User\User;
 use Api\Model\User\Entity\User\Email;
 use Api\Model\User\Entity\User\ConfirmToken;
 use Api\Model\OAuth\Entity\ScopeEntity;
-use Api\Model\OAuth\Entity\AccessTokenEntity;
 use Api\Model\OAuth\Entity\ClientEntity;
+use Api\Model\OAuth\Entity\AccessTokenEntity;
 
 class AuthFixture extends AbstractFixture
 {
@@ -40,19 +40,19 @@ class AuthFixture extends AbstractFixture
         $this->user = $user;
 
         $token = new AccessTokenEntity();
-        $token->setIdentifier(bin2hex(random_bytes(40)));
+        $tokenIdentifier = bin2hex(random_bytes(40));
+        $token->setIdentifier($tokenIdentifier);
         $token->setUserIdentifier($user->getId()->getId());
         $token->setExpiryDateTime(new \DateTime('+1 hour'));
         $token->setClient(new ClientEntity('app'));
         $token->addScope(new ScopeEntity('common'));
 
         $manager->persist($token);
-
         $manager->flush();
 
-        $this->addReference('user', $user);
-
         $this->token = (string)$token->convertToJWT(CryptKeyHelper::get());
+
+        $this->addReference('user', $user);
     }
 
     public function getUser(): User

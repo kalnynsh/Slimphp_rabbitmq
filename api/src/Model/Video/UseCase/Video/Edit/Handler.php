@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Api\Model\UseCase\Video\Edit;
+namespace Api\Model\Video\UseCase\Video\Edit;
 
 use Api\Model\Video\Entity\Video\VideoRepository;
 use Api\Model\Video\Entity\Video\VideoId;
