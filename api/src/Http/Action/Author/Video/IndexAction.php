@@ -46,7 +46,7 @@ class IndexAction implements RequestHandlerInterface
 
         return new JsonResponse([
             'count' => \count($allVideos),
-            'data' => array_map([$this, 'serialize'], $allVideos)
+            'data' => array_map([$this, 'serialize'], $allVideos),
         ]);
     }
 

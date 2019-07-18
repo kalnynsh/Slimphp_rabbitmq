@@ -48,5 +48,10 @@ export default new Router({
       name: 'author.upload',
       component: () => import('./views/Author/Video/Upload.vue')
     },
+    {
+      path: '/author/video/:id',
+      name: 'author.video',
+      component: () => import('./views/Author/Video/Show.vue')
+    },
   ]
 });
