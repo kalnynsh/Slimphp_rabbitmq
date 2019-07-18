@@ -33,6 +33,7 @@ services:
             dockerfile: php-fpm.docker
         volumes:
             - ./api:/var/www/api
+            - ./storage:/var/www/storage
         depends_on:
             - api-postgres
             - mailer
@@ -67,3 +68,12 @@ services:
         ports:
             - "1025:1025"
             - "8092:8025"
+
+    storage-nginx:
+        build:
+            context: ./storage/docker
+            dockerfile: nginx.docker
+        volumes:
+            - ./storage:/var/www/storage
+        ports:
+            - "8093:80"
