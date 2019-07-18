@@ -15,7 +15,7 @@ class CryptKeyHelper
             . '/'
             . getenv('API_OAUTH_PRIVATE_KEY_PATH'),
             null,
-            true
+            false
         );
     }
 }
