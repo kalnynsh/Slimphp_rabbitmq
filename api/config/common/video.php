@@ -54,7 +54,7 @@ return [
 
         $preferences->videoFormats = [
             new Format('webm'),
-            new Format('mp4')
+            new Format('mp4'),
         ];
 
         return $preferences;

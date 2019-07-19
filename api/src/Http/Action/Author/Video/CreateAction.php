@@ -29,6 +29,7 @@ class CreateAction implements RequestHandlerInterface
         $command = $this->deserialize($request);
 
         if ($errors = $this->validator->validate($command)) {
+            // print_r($errors);
             throw new ValidationException($errors);
         }
 
