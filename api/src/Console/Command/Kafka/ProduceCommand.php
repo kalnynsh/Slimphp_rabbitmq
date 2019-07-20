@@ -9,20 +9,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
 use Psr\Log\LoggerInterface;
-use Kafka\ProducerConfig;
 use Kafka\Producer;
 
 class ProduceCommand extends Command
 {
     private $logger;
-    private $brokers;
+    private $config;
 
     public function __construct(
         LoggerInterface $logger,
-        string $brokers
+        ProducerConfig $config
     ) {
         $this->logger = $logger;
-        $this->brokers = $brokers;
+        $this->config = $config;
 
         parent::__construct();
     }
@@ -37,13 +36,6 @@ class ProduceCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<comment>Produce message</comment>');
-
-        $config = ProducerConfig::getInstance();
-        $config->setMetadataRefreshIntervalMs(10000);
-        $config->setMetadataBrokerList($this->brokers);
-        $config->setBrokerVersion('1.1.0');
-        $config->setRequiredAck(1);
-        $config->setIsAsyn(false);
 
         $producer = new Producer();
         $producer->setLogger($this->logger);

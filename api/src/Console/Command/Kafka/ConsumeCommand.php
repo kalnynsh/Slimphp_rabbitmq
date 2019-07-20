@@ -8,20 +8,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
 use Psr\Log\LoggerInterface;
-use Kafka\ConsumerConfig;
 use Kafka\Consumer;
 
 class ConsumeCommand extends Command
 {
     private $logger;
-    private $brokers;
+    private $config;
 
     public function __construct(
         LoggerInterface $logger,
-        string $brokers
+        ConsumerConfig $config
     ) {
         $this->logger = $logger;
-        $this->brokers = $brokers;
+        $this->config = $config;
 
         parent::__construct();
     }
@@ -35,13 +34,9 @@ class ConsumeCommand extends Command
     {
         $output->writeln('<comment>Consume messages</comment>');
 
-        $config = ConsumerConfig::getInstance();
-        $config->setMetadataRefreshIntervalMs(10000);
-        $config->setMetadataBrokerList($this->brokers);
-        $config->setBrokerVersion('1.1.0');
-        $config->setGroupId('demo');
-        $config->setTopics(['notifications']);
-        $config->setOffsetReset('earliest');
+        $this->config->setGroupId('demo');
+        $this->config->setTopics(['notifications']);
+        $this->config->setOffsetReset('earliest');
 
         $consumer = new Consumer();
         $consumer->setLogger($this->logger);
