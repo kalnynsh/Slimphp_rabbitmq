@@ -8,21 +8,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
-use Psr\Log\LoggerInterface;
 use Kafka\Producer;
 
 class ProduceCommand extends Command
 {
-    private $logger;
-    private $config;
+    private $producer;
 
     public function __construct(
-        LoggerInterface $logger,
-        ProducerConfig $config
+        Producer $producer
     ) {
-        $this->logger = $logger;
-        $this->config = $config;
-
+        $this->producer = $producer;
         parent::__construct();
     }
 
@@ -37,10 +32,7 @@ class ProduceCommand extends Command
     {
         $output->writeln('<comment>Produce message</comment>');
 
-        $producer = new Producer();
-        $producer->setLogger($this->logger);
-
-        $producer->send([
+        $this->producer->send([
             [
                 'topic' => 'notifications',
                 'value' => json_encode([

@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use Kafka\ProducerConfig;
-use Kafka\ConsumerConfig;
+use Psr\Log\LoggerInterface;
 use Psr\Container\ContainerInterface;
+use Kafka\ProducerConfig;
+use Kafka\Producer;
+use Kafka\ConsumerConfig;
 
 return [
     ProducerConfig::class => function (ContainerInterface $container) {
@@ -17,6 +19,14 @@ return [
         $config->setIsAsyn(false);
 
         return $config;
+    },
+
+    Producer::class => function (ContainerInterface $container) {
+        $container->get(ProducerConfig::class);
+        $producer = new Producer();
+        $producer->setLogger($container->get(LoggerInterface::class));
+
+        return $producer;
     },
 
     ConsumerConfig::class => function (ContainerInterface $container) {

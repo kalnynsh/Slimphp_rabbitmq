@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
 use Psr\Log\LoggerInterface;
+use Kafka\ConsumerConfig;
 use Kafka\Consumer;
 
 class ConsumeCommand extends Command
