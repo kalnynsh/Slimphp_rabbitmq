@@ -1,8 +1,8 @@
-let WebSocket = require('ws');
-
-let fs = require('fs');
-let jwt = require('jsonwebtoken');
-let dotenv = require('dotenv');
+const WebSocket = require('ws');
+const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+const kafka = require('kafka-node');
 
 dotenv.load();
 
@@ -29,4 +29,26 @@ server.on('connection', function (ws, request) {
             }
         }
     });
+});
+
+const client = new kafka.KafkaClient({
+    kafkaHost: process.env.WS_KAFKA_BROKER_LIST
+});
+
+const consumer = new kafka.Consumer(
+    client,
+    [
+        {
+            topic: 'notifications',
+            partition: 0,
+        }
+    ],
+    {
+        groupId: 'websocket'
+    }
+);
+
+consumer.on('message', function (message) {
+    // eslint-disable-next-line no-console
+    console.log(message);
 });

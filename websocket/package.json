@@ -9,7 +9,8 @@
         "ws": "^6.1",
         "dotenv": "^6.1",
         "fs": "^0.0.2",
-        "jsonwebtoken": "^8.3"
+        "jsonwebtoken": "^8.3",
+        "kafka-node": "^3.0"
     },
     "devDependencies": {},
     "scripts": {
