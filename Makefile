@@ -1,10 +1,13 @@
 up: docker-up
 
-init: docker-clear-hard docker-up-build api-permissions api-env api-composer api-genrsa api-migration api-fixtures frontend-env frontend-install frontend-build storage-permissions
+init: docker-clear-hard docker-up-build api-permissions api-env api-composer api-genrsa pause api-migration api-fixtures frontend-env frontend-install frontend-build storage-permissions
 
 docker-clear-hard:
 	docker-compose down --remove-orphans
 	sudo rm -rf api/var/docker
+
+pause:
+	sleep 5
 
 docker-down:
 	docker-compose down --remove-orphans
