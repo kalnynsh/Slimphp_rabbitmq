@@ -6,6 +6,7 @@ namespace Api\Console\Command\Kafka;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
 use Psr\Log\LoggerInterface;
 use Kafka\ProducerConfig;
@@ -28,7 +29,9 @@ class ProduceCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('kafka:demo:produce');
+        $this
+            ->setName('kafka:demo:produce')
+            ->addArgument('user_id', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -48,9 +51,13 @@ class ProduceCommand extends Command
         $producer->send([
             [
                 'topic' => 'notifications',
-                'value' => 'Hello from Kafka!',
+                'value' => json_encode([
+                    'type' => 'notification',
+                    'user_id' => $input->getArgument('user_id'),
+                    'message' => 'Hello from Kafka!',
+                ]),
                 'key' => '',
-            ]
+            ],
         ]);
 
         $output->writeln('<info>Done!</info>');
