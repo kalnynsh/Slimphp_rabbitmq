@@ -11,7 +11,7 @@ axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 
 Vue.use(BootstrapVue);
 
-let user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem('user'));
 
 if (user) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + user.access_token;
@@ -44,6 +44,26 @@ axios.interceptors.response.use(null, error => {
       return Promise.reject(error);
     });
 });
+
+const socket = new WebSocket(process.env.VUE_APP_WS_URL);
+
+socket.open = function () {
+  if (user) {
+    socket.send(JSON.stringify({
+      type: 'auth',
+      token: user.access_token,
+    }));
+  }
+
+  if (!user) {
+    // eslint-disable-next-line no-console
+    console.log('No user');
+  }
+};
+
+socket.onmessage = function (event) {
+  alert('Recieved: ' + event.data);
+};
 
 new Vue({
   router,

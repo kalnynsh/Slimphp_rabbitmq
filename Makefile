@@ -1,6 +1,6 @@
 up: docker-up
 
-init: docker-clear-hard docker-up-build api-permissions api-env api-composer api-genrsa pause api-migration api-fixtures frontend-env frontend-install frontend-build storage-permissions
+init: docker-clear-hard docker-up-build api-permissions api-env api-composer api-genrsa pause api-migration api-fixtures frontend-env frontend-install frontend-build storage-permissions websocket-env websocket-key websocket-init websocket-start
 
 docker-clear-hard:
 	docker-compose down --remove-orphans
@@ -50,10 +50,27 @@ frontend-install:
 	docker-compose exec frontend-nodejs npm install
 
 frontend-build:
-	docker-compose exec frontend-nodejs npm build
+	docker-compose exec frontend-nodejs npm run build
 
 frontend-watch:
-	docker-compose exec frontend-nodejs npm watch
+	docker-compose exec frontend-nodejs npm run watch
 
 storage-permissions:
 	sudo chmod 777 storage/public/video
+
+websocket-init:
+	docker-compose exec websocket-nodejs npm install
+
+websocket-update:
+	docker-compose exec websocket-nodejs npm update
+
+websocket-env:
+	docker-compose exec websocket-nodejs rm -f .env
+	docker-compose exec websocket-nodejs ln -sr .env.example .env
+
+websocket-key:
+	rm -f ./websocket/public.key
+	cp ./api/public.key ./websocket/public.key
+
+websocket-start:
+	docker-compose exec websocket-nodejs npm run start
