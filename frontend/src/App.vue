@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <header class="app-header">
-      <Nav/>
+      <Nav />
     </header>
 
     <div class="app-content">
       <main class="container">
-        <router-view/>
+        <Notifications />
+        <router-view />
       </main>
     </div>
 
@@ -20,11 +21,13 @@
 </template>
 
 <script>
-  import Nav from '@/components/Nav.vue'
+  import Nav from '@/components/Nav.vue';
+  import Notifications from '@/components/Notifications.vue';
 
   export default {
     components: {
-      Nav
+      Nav,
+      Notifications
     }
   }
 </script>
