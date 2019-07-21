@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Doctrine\Type\Video;
 
-use Doctrine\DBAL\Types\GuidType;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Api\Model\Video\Entity\Author\AuthorId;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\GuidType;
 
 class AuthorIdType extends GuidType
 {
@@ -19,11 +19,10 @@ class AuthorIdType extends GuidType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return !empty($value) ? new AuthorId($value): null;
+        return !empty($value) ? new AuthorId($value) : null;
     }
 
-    public function getName(): string
-    {
+    public function getName(): string {
         return self::NAME;
     }
 }

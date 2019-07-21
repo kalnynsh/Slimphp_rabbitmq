@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Api\Model\Video\Service\Processor\Thumbnailer;
 
-use Api\Model\Video\Service\Processor\Video;
-use Api\Model\Video\Service\Processor\Size;
-use Api\Model\Video\Service\Processor\Image;
 use Api\Model\Video\Service\Processor\Format;
+use Api\Model\Video\Service\Processor\Image;
+use Api\Model\Video\Service\Processor\Size;
+use Api\Model\Video\Service\Processor\Video;
 
 class Thumbnailer
 {
@@ -21,10 +21,8 @@ class Thumbnailer
         $this->drivers = $drivers;
     }
 
-    public function thumbnail(
-        Video $video,
-        Size $size
-    ): Image {
+    public function thumbnail(Video $video, Size $size): Image
+    {
         return $this
             ->resolveDriver($video->getFormat())
             ->thumbnail($video, $size);
@@ -38,11 +36,9 @@ class Thumbnailer
             }
         }
 
-        throw new \RuntimeException(
-            sprintf(
-                'Unable to find a thumbnailer for %s.',
-                $from->getName()
-            )
-        );
+        throw new \RuntimeException(sprintf(
+            'Unable to find a thumbnailer from %s',
+            $from->getName()
+        ));
     }
 }

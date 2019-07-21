@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\Video\Entity;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Api\Model\Video\Entity\Video\VideoRepository;
+use Api\Model\EntityNotFoundException;
 use Api\Model\Video\Entity\Video\Video;
 use Api\Model\Video\Entity\Video\VideoId;
-use Api\Model\EntityNotFoundException;
+use Api\Model\Video\Entity\Video\VideoRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineVideoRepository implements VideoRepository
 {
@@ -30,7 +30,6 @@ class DoctrineVideoRepository implements VideoRepository
         if (!$video = $this->repo->find($id->getId())) {
             throw new EntityNotFoundException('Video is not found.');
         }
-
         return $video;
     }
 

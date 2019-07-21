@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Api\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
 /**
  * @ORM\Entity

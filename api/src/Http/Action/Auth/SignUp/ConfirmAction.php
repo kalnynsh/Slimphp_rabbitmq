@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Api\Http\Action\Auth\SignUp;
 
-use Zend\Diactoros\Response\JsonResponse;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Api\Model\User\UseCase\SignUp\Confirm\Handler;
-use Api\Model\User\UseCase\SignUp\Confirm\Command;
+use Api\Http\ValidationException;
 use Api\Http\Validator\Validator;
-use Api\Http\Exception\ValidationException;
+use Api\Model\User\UseCase\SignUp\Confirm\Command;
+use Api\Model\User\UseCase\SignUp\Confirm\Handler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
 class ConfirmAction implements RequestHandlerInterface
 {
     private $handler;
     private $validator;
 
-    public function __construct(
-        Handler $handler,
-        Validator $validator
-    ) {
+    public function __construct(Handler $handler, Validator $validator)
+    {
         $this->handler = $handler;
         $this->validator = $validator;
     }

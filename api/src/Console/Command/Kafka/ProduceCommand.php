@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Api\Console\Command\Kafka;
 
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Command\Command;
 use Kafka\Producer;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ProduceCommand extends Command
 {
     private $producer;
 
-    public function __construct(
-        Producer $producer
-    ) {
+    public function __construct(Producer $producer)
+    {
         $this->producer = $producer;
         parent::__construct();
     }
@@ -25,7 +24,8 @@ class ProduceCommand extends Command
     {
         $this
             ->setName('kafka:demo:produce')
-            ->addArgument('user_id', InputArgument::REQUIRED);
+            ->addArgument('user_id', InputArgument::REQUIRED)
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +38,7 @@ class ProduceCommand extends Command
                 'value' => json_encode([
                     'type' => 'notification',
                     'user_id' => $input->getArgument('user_id'),
-                    'message' => 'Hello from Kafka!',
+                    'message' => 'Hello!',
                 ]),
                 'key' => '',
             ],

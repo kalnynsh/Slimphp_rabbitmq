@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Api\Model\Video\Entity\Author;
 
-use Api\Model\EventTrait;
 use Api\Model\AggregateRoot;
+use Api\Model\EventTrait;
 use Api\Model\Video\Entity\Author\Event\AuthorCreated;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,7 +23,6 @@ class Author implements AggregateRoot
      * @ORM\Id
      */
     private $id;
-
     /**
      * @var string
      * @ORM\Column(type="string")

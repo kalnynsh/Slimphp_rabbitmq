@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Component\Validator\Validation;
-use Psr\Log\LoggerInterface;
-use Psr\Container\ContainerInterface;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Api\ReadModel;
-use Api\Model;
-use Api\Http\VideoUrl;
-use Api\Http\Validator\Validator;
-use Api\Http\Middleware;
 use Api\Http\Action;
+use Api\Http\Middleware;
+use Api\Http\Validator\Validator;
+use Api\Http\VideoUrl;
+use Api\Model;
+use Api\ReadModel;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 return [
     ValidatorInterface::class => function () {
         AnnotationRegistry::registerLoader('class_exists');
-
         return Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
             ->getValidator();

@@ -18,12 +18,9 @@ class Errors
     public function toArray(): array
     {
         $errors = [];
-
         foreach ($this->violations as $violation) {
-            $errors[$violation->getPropertyPath()] =
-                $violation->getMessage();
+            $errors[$violation->getPropertyPath()] = $violation->getMessage();
         }
-
         return $errors;
     }
 }

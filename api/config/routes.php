@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-use Slim\App;
-use Psr\Container\ContainerInterface;
-use League\OAuth2\Server\Middleware\ResourceServerMiddleware;
-use Api\Infrastructure\Framework\Middleware\CallableMiddlewareAdapter as CM;
-use Api\Http\Middleware;
 use Api\Http\Action;
+use Api\Http\Middleware;
+use Api\Infrastructure\Framework\Middleware\CallableMiddlewareAdapter as CM;
+use League\OAuth2\Server\Middleware\ResourceServerMiddleware;
+use Psr\Container\ContainerInterface;
+use Slim\App;
 
 return function (App $app, ContainerInterface $container) {
+
     $app->add(new CM($container, Middleware\BodyParamsMiddleware::class));
     $app->add(new CM($container, Middleware\DomainExceptionMiddleware::class));
     $app->add(new CM($container, Middleware\ValidationExceptionMiddleware::class));
@@ -34,4 +35,5 @@ return function (App $app, ContainerInterface $container) {
         $this->post('/videos/create', Action\Author\Video\CreateAction::class . ':handle');
         $this->get('/videos/{id}', Action\Author\Video\ShowAction::class . ':handle');
     })->add($auth);
+
 };

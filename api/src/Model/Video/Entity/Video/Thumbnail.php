@@ -16,17 +16,14 @@ class Thumbnail
      * @ORM\Column(type="string", nullable=true)
      */
     private $path;
-
     /**
      * @var Size
      * @ORM\Embedded(class="Size")
      */
     private $size;
 
-    public function __construct(
-        string $path,
-        Size $size
-    ) {
+    public function __construct(string $path, Size $size)
+    {
         $this->path = $path;
         $this->size = $size;
     }

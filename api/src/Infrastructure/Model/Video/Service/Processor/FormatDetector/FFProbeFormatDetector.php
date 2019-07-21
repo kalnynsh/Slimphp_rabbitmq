@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\Video\Service\Processor\FormatDetector;
 
-use Api\Model\Video\Service\Processor\Video;
-use Api\Model\Video\Service\Processor\Size;
-use Api\Model\Video\Service\Processor\FormatDetector;
 use Api\Model\Video\Service\Processor\Format;
+use Api\Model\Video\Service\Processor\FormatDetector;
+use Api\Model\Video\Service\Processor\Size;
+use Api\Model\Video\Service\Processor\Video;
 
 class FFProbeFormatDetector implements FormatDetector
 {
@@ -36,18 +36,14 @@ class FFProbeFormatDetector implements FormatDetector
 
     private function parseSize(string $source): Size
     {
-        exec(
-            "ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 {$source}",
-            $output,
-            $return
-        );
+        exec("ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 {$source}", $output, $return);
 
         if ($return !== 0) {
-            throw new \RuntimeException('Unaable to get video dimensions for ' . $output);
+            throw new \RuntimeException('Unable to get video dimensions for ' . $output);
         }
 
         if (!preg_match('#^(\d+)x(\d+)$#', $output[0], $matches)) {
-            throw new \RuntimeException('Incorrect dimentions for ' . $source);
+            throw new \RuntimeException('Incorrect dimensions for ' . $source);
         }
 
         return new Size((int)$matches[1], (int)$matches[2]);

@@ -6,26 +6,12 @@ namespace Api\Model\Video\Service\Processor;
 
 class Video
 {
-    /**
-     * @var string
-     */
     private $path;
-
-    /**
-     * @var Format
-     */
     private $format;
-
-    /**
-     * @var Size
-     */
     private $size;
 
-    public function __construct(
-        string $path,
-        Format $format,
-        Size $size
-    ) {
+    public function __construct(string $path, Format $format, Size $size)
+    {
         $this->path = $path;
         $this->format = $format;
         $this->size = $size;

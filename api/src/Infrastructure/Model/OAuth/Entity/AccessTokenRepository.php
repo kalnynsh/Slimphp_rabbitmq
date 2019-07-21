@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Api\Model\OAuth\Entity\AccessTokenEntity;
+use Doctrine\ORM\EntityManagerInterface;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
@@ -25,26 +25,19 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $this->em = $em;
     }
 
-    public function getNewToken(
-        ClientEntityInterface $clientEntity,
-        array $scopes,
-        $userIdentifier = null
-    ): AccessTokenEntityInterface {
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null): AccessTokenEntityInterface
+    {
         $accessToken = new AccessTokenEntity();
         $accessToken->setClient($clientEntity);
-
         foreach ($scopes as $scope) {
             $accessToken->addScope($scope);
         }
-
         $accessToken->setUserIdentifier($userIdentifier);
-
         return $accessToken;
     }
 
-    public function persistNewAccessToken(
-        AccessTokenEntityInterface $accessTokenEntity
-    ): void {
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
+    {
         if ($this->exists($accessTokenEntity->getIdentifier())) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
         }
@@ -68,16 +61,10 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
     private function exists($id): bool
     {
-        return
-            $this
-                ->repo
-                ->createQueryBuilder('t')
-                ->select('COUNT(t.identifier)')
-                ->andWhere('t.identifier = :identifier')
-                ->setParameter(':identifier', $id)
-                ->getQuery()
-                ->getSingleScalarResult()
-                > 0
-            ;
+        return $this->repo->createQueryBuilder('t')
+            ->select('COUNT(t.identifier)')
+            ->andWhere('t.identifier = :identifier')
+            ->setParameter(':identifier', $id)
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 }

@@ -12,10 +12,8 @@ use Zend\Diactoros\Response\JsonResponse;
 
 class DomainExceptionMiddleware implements MiddlewareInterface
 {
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler
-    ): ResponseInterface {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
         try {
             return $handler->handle($request);
         } catch (\DomainException $e) {

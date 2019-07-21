@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\ReadModel\User;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Api\ReadModel\User\UserReadRepository;
 use Api\Model\User\Entity\User\User;
+use Api\ReadModel\User\UserReadRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineUserReadRepository implements UserReadRepository
 {
     /**
-     * @var \Doctrine\ORM\Entity\EntityRepository
+     * @var \Doctrine\ORM\EntityRepository
      */
     private $repo;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $em;
 
     public function __construct(EntityManagerInterface $em)

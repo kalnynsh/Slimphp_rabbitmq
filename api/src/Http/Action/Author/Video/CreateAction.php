@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Api\Http\Action\Author\Video;
 
-use Zend\Diactoros\Response\JsonResponse;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Api\Http\ValidationException;
+use Api\Http\Validator\Validator;
 use Api\Model\Video\UseCase\Video\Create\Command;
 use Api\Model\Video\UseCase\Video\Create\Handler;
-use Api\Http\Validator\Validator;
-use Api\Http\Exception\ValidationException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
 class CreateAction implements RequestHandlerInterface
 {
@@ -29,7 +29,6 @@ class CreateAction implements RequestHandlerInterface
         $command = $this->deserialize($request);
 
         if ($errors = $this->validator->validate($command)) {
-            // print_r($errors);
             throw new ValidationException($errors);
         }
 

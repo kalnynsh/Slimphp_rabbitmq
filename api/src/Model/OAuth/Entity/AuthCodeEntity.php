@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Api\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\Traits\AuthCodeTrait;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 
 /**
  * @ORM\Entity
@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AuthCodeEntity implements AuthCodeEntityInterface
 {
-    use AuthCodeTrait, TokenEntityTrait, EntityTrait;
+    use EntityTrait, TokenEntityTrait, AuthCodeTrait;
 
     /**
      * @ORM\Column(type="string", length=80)
@@ -51,6 +51,7 @@ class AuthCodeEntity implements AuthCodeEntityInterface
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @ORM\Id
      */
     protected $redirectUri;
 }

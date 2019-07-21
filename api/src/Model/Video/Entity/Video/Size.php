@@ -16,17 +16,14 @@ class Size
      * @ORM\Column(type="integer", nullable=true)
      */
     private $width;
-
     /**
      * @var int
      * @ORM\Column(type="integer", nullable=true)
      */
     private $height;
 
-    public function __construct(
-        int $width,
-        int $height
-    ) {
+    public function __construct(int $width, int $height)
+    {
         $this->width = $width;
         $this->height = $height;
     }

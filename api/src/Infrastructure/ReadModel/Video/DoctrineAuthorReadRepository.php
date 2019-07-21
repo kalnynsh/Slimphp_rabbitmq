@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\ReadModel\Video;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Api\ReadModel\Video\AuthorReadRepository;
 use Api\Model\Video\Entity\Author\Author;
+use Api\ReadModel\Video\AuthorReadRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineAuthorReadRepository implements AuthorReadRepository
 {
     /**
-     * @var \Doctrine\ORM\Entity\EntityRepository
+     * @var \Doctrine\ORM\EntityRepository
      */
     private $repo;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $em;
 
     public function __construct(EntityManagerInterface $em)

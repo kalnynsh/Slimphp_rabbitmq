@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Api\Model\Video\UseCase\Video\Create;
 
-use Api\Model\Video\Service\Uploader;
-use Api\Model\Video\Service\Processor\Thumbnailer\Thumbnailer;
-use Api\Model\Video\Service\Processor\FormatDetector;
-use Api\Model\Video\Service\Processor\Converter\Converter;
-use Api\Model\Video\Entity\Video\VideoRepository;
+use Api\Model\Flusher;
+use Api\Model\Video\Entity\Author\AuthorId;
+use Api\Model\Video\Entity\Author\AuthorRepository;
+use Api\Model\Video\Entity\Video\Size;
+use Api\Model\Video\Entity\Video\Thumbnail;
 use Api\Model\Video\Entity\Video\Video;
 use Api\Model\Video\Entity\Video\VideoId;
-use Api\Model\Video\Entity\Video\Thumbnail;
-use Api\Model\Video\Entity\Video\Size;
-use Api\Model\Video\Entity\Author\AuthorRepository;
-use Api\Model\Video\Entity\Author\AuthorId;
-use Api\Model\Flusher;
+use Api\Model\Video\Entity\Video\VideoRepository;
+use Api\Model\Video\Service\Processor\Converter\Converter;
+use Api\Model\Video\Service\Processor\FormatDetector;
+use Api\Model\Video\Service\Processor\Thumbnailer\Thumbnailer;
+use Api\Model\Video\Service\Uploader;
 
 class Handler
 {
@@ -37,7 +37,8 @@ class Handler
         Thumbnailer $thumbnailer,
         Flusher $flusher,
         Preferences $preferences
-    ) {
+    )
+    {
         $this->videos = $videos;
         $this->authors = $authors;
         $this->uploader = $uploader;
@@ -48,11 +49,9 @@ class Handler
         $this->preferences = $preferences;
     }
 
-    public function handler(Command $command): VideoId
+    public function handle(Command $command): VideoId
     {
-        $author = $this->authors->get(
-            new AuthorId($command->author)
-        );
+        $author = $this->authors->get(new AuthorId($command->author));
 
         $path = $this->uploader->upload($command->file);
 
@@ -63,15 +62,10 @@ class Handler
             'New Video',
             $path
         );
-
+        
         $detected = $this->detector->detect($path);
 
-        $thumb = $this
-            ->thumbnailer
-            ->thumbnail(
-                $detected,
-                $this->preferences->thumbnailSize
-            );
+        $thumb = $this->thumbnailer->thumbnail($detected, $this->preferences->thumbnailSize);
 
         $video->setThumbnail(
             new Thumbnail(
@@ -91,20 +85,13 @@ class Handler
             }
         }
 
-        if ($detected->getSize()->lessThen($this->preferences->videoSizes[0])) {
+        if ($detected->getSize()->lessThan($this->preferences->videoSizes[0])) {
             $sizes[] = $this->preferences->videoSizes[0];
         }
 
         foreach ($this->preferences->videoFormats as $format) {
             foreach ($sizes as $size) {
-                $processed = $this
-                    ->converter
-                    ->convert(
-                        $detected,
-                        $format,
-                        $size
-                    );
-
+                $processed = $this->converter->convert($detected, $format, $size);
                 $video->addFile(
                     $processed->getPath(),
                     $processed->getFormat()->getName(),

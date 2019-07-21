@@ -12,11 +12,9 @@ class VideoPublished
     public $id;
     public $author;
 
-    public function __construct(
-        VideoId $id,
-        AuthorId $author
-    ) {
+    public function __construct(VideoId $id, AuthorId $author)
+    {
         $this->id = $id;
-        $this->author =  $author;
+        $this->author = $author;
     }
 }

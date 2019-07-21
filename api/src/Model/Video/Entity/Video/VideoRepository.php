@@ -8,7 +8,7 @@ interface VideoRepository
 {
     public function get(VideoId $id): Video;
 
-    public function add(Video $video): void;
+    public function add(Video $video):  void;
 
-    public function remove(Video $video): void;
+    public function remove(Video $video):  void;
 }

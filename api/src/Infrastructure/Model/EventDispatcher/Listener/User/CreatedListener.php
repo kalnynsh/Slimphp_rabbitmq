@@ -11,23 +11,18 @@ class CreatedListener
     private $mailer;
     private $from;
 
-    public function __construct(
-        \Swift_Mailer $mailer,
-        array $from
-    ) {
+    public function __construct(\Swift_Mailer $mailer, array $from)
+    {
         $this->mailer = $mailer;
         $this->from = $from;
     }
 
     public function __invoke(UserCreated $event)
     {
-        $message = (new \Swift_Message('Signup confirmation'))
+        $message = (new \Swift_Message('Sign Up Confirmation'))
             ->setFrom($this->from)
             ->setTo($event->email->getEmail())
-            ->setBody(
-                'Token: '
-                . $event->confirmToken->getToken()
-            )
+            ->setBody('Token: ' . $event->confirmToken->getToken())
         ;
 
         if (!$this->mailer->send($message)) {

@@ -13,7 +13,6 @@ class Command
      * @Assert\Email()
      */
     public $email;
-
     /**
      * @Assert\NotBlank()
      */

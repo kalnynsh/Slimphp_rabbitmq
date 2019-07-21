@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace Api\Console\Command\Kafka;
 
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Command\Command;
-use Psr\Log\LoggerInterface;
-use Kafka\ConsumerConfig;
 use Kafka\Consumer;
+use Kafka\ConsumerConfig;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsumeCommand extends Command
 {
     private $logger;
     private $config;
 
-    public function __construct(
-        LoggerInterface $logger,
-        ConsumerConfig $config
-    ) {
+    public function __construct(LoggerInterface $logger, ConsumerConfig $config)
+    {
         $this->logger = $logger;
         $this->config = $config;
-
         parent::__construct();
     }
 
@@ -37,12 +34,11 @@ class ConsumeCommand extends Command
 
         $this->config->setGroupId('demo');
         $this->config->setTopics(['notifications']);
-        $this->config->setOffsetReset('latest');  // 'latest' | 'earliest'
 
         $consumer = new Consumer();
         $consumer->setLogger($this->logger);
 
-        $consumer->start(function ($topic, $part, $message) use ($output) {
+        $consumer->start(function($topic, $part, $message) use ($output) {
             $output->writeln(print_r($message, true));
         });
 

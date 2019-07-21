@@ -2,32 +2,30 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
-use Api\Model\Video\UseCase\Video\Create\Preferences;
-use Api\Model\Video\Service\Uploader;
-use Api\Model\Video\Service\Processor\Thumbnailer\Thumbnailer;
-use Api\Model\Video\Service\Processor\Size;
-use Api\Model\Video\Service\Processor\FormatDetector;
-use Api\Model\Video\Service\Processor\Converter\Converter;
-use Api\Infrastructure\Model\Video\Service\Uploader\LocalUploader;
-use Api\Infrastructure\Model\Video\Service\Processor\Thumbnailer\FFMpegThumbnailer;
-use Api\Infrastructure\Model\Video\Service\Processor\FormatDetector\FFProbeFormatDetector;
-use Api\Infrastructure\Model\Video\Service\Processor\Converter\FFMpegWebmConverter;
-use Api\Infrastructure\Model\Video\Service\Processor\Converter\FFMpegMp4Converter;
-use Api\Model\Video\Service\Processor\Format;
 use Api\Http\VideoUrl;
+use Api\Infrastructure\Model\Video\Service\Processor\Converter\FFMpegMp4Converter;
+use Api\Infrastructure\Model\Video\Service\Processor\Converter\FFMpegWebmConverter;
+use Api\Infrastructure\Model\Video\Service\Processor\FormatDetector\FFProbeFormatDetector;
+use Api\Infrastructure\Model\Video\Service\Processor\Thumbnailer\FFMpegThumbnailer;
+use Api\Infrastructure\Model\Video\Service\Uploader\LocalUploader;
+use Api\Model\Video\Service\Processor\Converter\Converter;
+use Api\Model\Video\Service\Processor\Format;
+use Api\Model\Video\Service\Processor\FormatDetector;
+use Api\Model\Video\Service\Processor\Size;
+use Api\Model\Video\Service\Processor\Thumbnailer\Thumbnailer;
+use Api\Model\Video\Service\Uploader;
+use Api\Model\Video\UseCase\Video\Create\Preferences;
+use Psr\Container\ContainerInterface;
 
 return [
     Uploader::class => function (ContainerInterface $container) {
-        return new LocalUploader(
-            $container->get('config')['video']['upload_path']
-        );
+        return new LocalUploader($container->get('config')['video']['upload_path']);
     },
 
     Converter::class => function (ContainerInterface $container) {
         return new Converter([
             new FFMpegWebmConverter($container->get('config')['video']['upload_path']),
-            new FFMpegMp4Converter($container->get('config')['video']['upload_path']),
+            new FFMpegMp4Converter($container->get('config')['video']['upload_path'])
         ]);
     },
 

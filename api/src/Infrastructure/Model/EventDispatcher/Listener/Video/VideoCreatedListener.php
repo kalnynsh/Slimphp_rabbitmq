@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\EventDispatcher\Listener\Video;
 
-use Kafka\Producer;
 use Api\Model\Video\Entity\Video\Event\VideoCreated;
+use Kafka\Producer;
 
 class VideoCreatedListener
 {
-    /** @property Producer $producer */
     private $producer;
 
     public function __construct(Producer $producer)
     {
-        $this->producer= $producer;
+        $this->producer = $producer;
     }
 
     public function __invoke(VideoCreated $event)
     {
-        $this->procuder->send([
+        $this->producer->send([
             [
                 'topic' => 'notifications',
                 'value' => json_encode([
@@ -28,7 +27,7 @@ class VideoCreatedListener
                     'message' => 'Video created',
                 ]),
                 'key' => '',
-            ]
+            ],
         ]);
     }
 }

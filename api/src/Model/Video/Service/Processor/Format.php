@@ -6,9 +6,6 @@ namespace Api\Model\Video\Service\Processor;
 
 class Format
 {
-    /**
-     * @var string
-     */
     private $name;
 
     public function __construct(string $name)

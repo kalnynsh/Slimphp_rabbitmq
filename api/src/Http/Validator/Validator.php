@@ -18,11 +18,9 @@ class Validator
     public function validate($object): ?Errors
     {
         $violations = $this->validator->validate($object);
-
         if ($violations->count() > 0) {
             return new Errors($violations);
         }
-
         return null;
     }
 }

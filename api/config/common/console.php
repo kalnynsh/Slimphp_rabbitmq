@@ -1,10 +1,10 @@
 <?php
 
-use Psr\Log\LoggerInterface;
-use Psr\Container\ContainerInterface;
-use Kafka\Producer;
-use Kafka\ConsumerConfig;
 use Api\Console\Command;
+use Kafka\ConsumerConfig;
+use Kafka\Producer;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 return [
     Command\Kafka\ProduceCommand::class => function (ContainerInterface $container) {

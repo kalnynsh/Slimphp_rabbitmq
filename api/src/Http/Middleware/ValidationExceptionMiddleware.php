@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Api\Http\Middleware;
 
-use Zend\Diactoros\Response\JsonResponse;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Api\Http\ValidationException;
 use Psr\Http\Message\ResponseInterface;
-use Api\Http\Exception\ValidationException;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
 class ValidationExceptionMiddleware implements MiddlewareInterface
 {
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler
-    ): ResponseInterface {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
         try {
             return $handler->handle($request);
-        } catch (ValidationException $err) {
+        } catch (ValidationException $e) {
             return new JsonResponse([
-                'errors' => $err->getErrors()->toArray(),
+                'errors' => $e->getErrors()->toArray(),
             ], 400);
         }
     }

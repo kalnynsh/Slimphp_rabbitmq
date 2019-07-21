@@ -11,15 +11,12 @@ class VideoRemoved
 {
     public $id;
     public $author;
-    public $origin;
+    private $origin;
 
-    public function __construct(
-        VideoId $id,
-        AuthorId $author,
-        string $origin
-    ) {
+    public function __construct(VideoId $id, AuthorId $author, string $origin)
+    {
         $this->id = $id;
-        $this->author =  $author;
+        $this->author = $author;
         $this->origin = $origin;
     }
 }

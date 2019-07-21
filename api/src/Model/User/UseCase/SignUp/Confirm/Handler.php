@@ -13,10 +13,8 @@ class Handler
     private $users;
     private $flusher;
 
-    public function __construct(
-        UserRepository $users,
-        Flusher $flusher
-    ) {
+    public function __construct(UserRepository $users, Flusher $flusher)
+    {
         $this->users = $users;
         $this->flusher = $flusher;
     }
@@ -27,6 +25,6 @@ class Handler
 
         $user->confirmSignup($command->token, new \DateTimeImmutable());
 
-        $this->flusher->flush();
+        $this->flusher->flush($user);
     }
 }

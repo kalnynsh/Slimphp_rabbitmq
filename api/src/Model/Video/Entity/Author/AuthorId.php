@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Api\Model\Video\Entity\Author;
 
-use Webmozart\Assert\Assert;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 class AuthorId
 {

@@ -1,13 +1,13 @@
 <?php
 
-declare(Strict_types=1);
+declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use Api\Model\OAuth\Entity\ScopeEntity;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {
@@ -28,24 +28,15 @@ class ScopeRepository implements ScopeRepositoryInterface
         return $this->scopes[$identifier] ?? null;
     }
 
-    public function finalizeScopes(
-        array $scopes,
-        $grantType,
-        ClientEntityInterface $clientEntity,
-        $userIdentifier = null
-    ): array {
-        return
-            array_filter(
-                $scopes,
-                function (ScopeEntityInterface $scope) {
-                    foreach ($this->scopes as $item) {
-                        if ($scope->getIdentifier() === $item->getIdentifier()) {
-                            return true;
-                        }
-                    }
-                    return false;
+    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null): array
+    {
+        return array_filter($scopes, function (ScopeEntityInterface $scope) {
+            foreach ($this->scopes as $item) {
+                if ($scope->getIdentifier() === $item->getIdentifier()) {
+                    return true;
                 }
-            )
-        ;
+            }
+            return false;
+        });
     }
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\Video\Service\Processor\Converter;
 
-use Api\Model\Video\Service\Processor\Video;
-use Api\Model\Video\Service\Processor\Size;
-use Api\Model\Video\Service\Processor\Format;
 use Api\Model\Video\Service\Processor\Converter\Driver;
+use Api\Model\Video\Service\Processor\Format;
+use Api\Model\Video\Service\Processor\Size;
+use Api\Model\Video\Service\Processor\Video;
 
 class FFMpegWebmConverter implements Driver
 {
@@ -32,42 +32,20 @@ class FFMpegWebmConverter implements Driver
         $width = $size->getWidth();
         $height = $size->getHeight();
 
-        exec(
-            "ffmpeg -i {$source} -f webm -vcodec libvpx -acodec libvorbis -crf 22"
-            . " -vf 'scale={$width}:{$height}:force_original_aspect_ratio=decrease,"
-            . "pad={$width}:{$height}:x=({$width}-iw)/2:y=({$height}-ih)/2:color=black'"
-            . " {$target}",
-            $output,
-            $return
+        exec("ffmpeg -i {$source} -f webm -vcodec libvpx -acodec libvorbis -crf 22 " .
+            "-vf 'scale={$width}:{$height}:force_original_aspect_ratio=decrease,pad={$width}:{$height}:x=({$width}-iw)/2:y=({$height}-ih)/2:color=black'" .
+            " {$target}", $output, $return
         );
 
         if ($return !== 0) {
-            throw new \RuntimeException(
-                'Unable to convert '
-                . $video->getPath()
-                . ' to '
-                . $format->getName()
-            );
+            throw new \RuntimeException('Unable to convert ' . $video->getPath() . ' to ' . $format->getName());
         }
 
-        return new Video(
-            $filename,
-            $format,
-            $size
-        );
+        return new Video($filename, $format, $size);
     }
 
     private function createFileName(Video $video, Size $size): string
     {
-        return pathinfo(
-            $video->getPath(),
-            PATHINFO_FILENAME
-        )
-            . '_'
-            . $size->getWidth()
-            . 'x'
-            . $size->getHeight()
-            . '.webm'
-        ;
+        return pathinfo($video->getPath(), PATHINFO_FILENAME) . '_' . $size->getWidth() . 'x' . $size->getHeight() . '.webm';
     }
 }

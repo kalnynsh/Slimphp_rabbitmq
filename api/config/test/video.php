@@ -7,10 +7,7 @@ return [
         'video' => [
             'upload_path' => 'var/test',
             'sizes' => [
-                [
-                    320,
-                    180
-                ],
+                [320, 180],
             ],
         ],
     ],

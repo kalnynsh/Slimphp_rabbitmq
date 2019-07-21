@@ -6,14 +6,7 @@ namespace Api\Model\Video\Service\Processor;
 
 class Image
 {
-    /**
-     * @var string
-     */
     private $path;
-
-    /**
-     * @var Size
-     */
     private $size;
 
     public function __construct(string $path, Size $size)

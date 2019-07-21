@@ -10,7 +10,7 @@ class UserEntity implements UserEntityInterface
 {
     private $identifier;
 
-    public function __construct(string $identifier)
+    public function __construct($identifier)
     {
         $this->identifier = $identifier;
     }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
-use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Api\Model\OAuth\Entity\AuthCodeEntity;
+use Doctrine\ORM\EntityManagerInterface;
+use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
 class AuthCodeRepository implements AuthCodeRepositoryInterface
 {
@@ -29,42 +29,35 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         return new AuthCodeEntity();
     }
 
-    public function persistNewAuthCode(
-        AuthCodeEntityInterface $authCodeEntity
-    ): void {
-        if ($this->exists($authCodeEntity->getIdentifier())) {
+    public function persistNewAuthCode(AuthCodeEntityInterface $accessTokenEntity): void
+    {
+        if ($this->exists($accessTokenEntity->getIdentifier())) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
         }
 
-        $this->em->persist($authCodeEntity);
+        $this->em->persist($accessTokenEntity);
         $this->em->flush();
     }
 
-    public function revokeAuthCode($authCodeId): void
+    public function revokeAuthCode($tokenId): void
     {
-        if ($authCode = $this->repo->find($authCodeId)) {
-            $this->em->remove($authCode);
+        if ($token = $this->repo->find($tokenId)) {
+            $this->em->remove($token);
             $this->em->flush();
         }
     }
 
-    public function isAuthCodeRevoked($authCodeId): bool
+    public function isAuthCodeRevoked($tokenId): bool
     {
-        return !$this->exists($authCodeId);
+        return !$this->exists($tokenId);
     }
 
     private function exists($id): bool
     {
-        return
-            $this
-                ->repo
-                ->createQueryBuilder('t')
+        return $this->repo->createQueryBuilder('t')
                 ->select('COUNT(t.identifier)')
                 ->andWhere('t.identifier = :identifier')
                 ->setParameter(':identifier', $id)
-                ->getQuery()
-                ->getSingleScalarResult()
-                    > 0
-            ;
+                ->getQuery()->getSingleScalarResult() > 0;
     }
 }

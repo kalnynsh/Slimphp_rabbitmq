@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Api\Http\Action\Author;
 
-use Zend\Diactoros\Response\JsonResponse;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Api\Model\Video\UseCase\Author\Create\Handler;
-use Api\Model\Video\UseCase\Author\Create\Command;
+use Api\Http\ValidationException;
 use Api\Http\Validator\Validator;
-use Api\Http\Exception\ValidationException;
+use Api\Model\Video\UseCase\Author\Create\Command;
+use Api\Model\Video\UseCase\Author\Create\Handler;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Zend\Diactoros\Response\JsonResponse;
 
 class CreateAction implements RequestHandlerInterface
 {

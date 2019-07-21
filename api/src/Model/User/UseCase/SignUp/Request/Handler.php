@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Api\Model\User\UseCase\SignUp\Request;
 
-use Api\Model\User\Service\PasswordHasher;
-use Api\Model\User\Service\ConfirmTokenizer;
-use Api\Model\User\Entity\User\UserRepository;
-use Api\Model\User\Entity\User\UserId;
-use Api\Model\User\Entity\User\User;
-use Api\Model\User\Entity\User\Email;
+use Api\Model\EventDispatcher;
 use Api\Model\Flusher;
+use Api\Model\User\Entity\User\Email;
+use Api\Model\User\Entity\User\User;
+use Api\Model\User\Entity\User\UserId;
+use Api\Model\User\Entity\User\UserRepository;
+use Api\Model\User\Service\ConfirmTokenizer;
+use Api\Model\User\Service\PasswordHasher;
 
 class Handler
 {
@@ -24,7 +25,8 @@ class Handler
         PasswordHasher $hasher,
         ConfirmTokenizer $tokenizer,
         Flusher $flusher
-    ) {
+    )
+    {
         $this->users = $users;
         $this->hasher = $hasher;
         $this->tokenizer = $tokenizer;
@@ -44,11 +46,11 @@ class Handler
             new \DateTimeImmutable(),
             $email,
             $this->hasher->hash($command->password),
-            $this->tokenizer->generate()
+            $token = $this->tokenizer->generate()
         );
 
         $this->users->add($user);
 
-        $this->flusher->flush();
+        $this->flusher->flush($user);
     }
 }

@@ -8,7 +8,7 @@ use Api\Model\Video\Entity\Video\Video;
 
 interface VideoReadRepository
 {
-    public function find(string $authorId, string $id): ?Video;
-
     public function allByAuthor(string $authorId): array;
+
+    public function find(string $authorId, string $id): ?Video;
 }

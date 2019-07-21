@@ -6,14 +6,7 @@ namespace Api\Model\Video\Service\Processor;
 
 class Size
 {
-    /**
-     * @var int
-     */
     private $width;
-
-    /**
-     * @var int
-     */
     private $height;
 
     public function __construct(int $width, int $height)
@@ -22,7 +15,7 @@ class Size
         $this->height = $height;
     }
 
-    public function lessThen(self $size): bool
+    public function lessThan(self $size): bool
     {
         return $this->getHeight() < $size->getHeight();
     }

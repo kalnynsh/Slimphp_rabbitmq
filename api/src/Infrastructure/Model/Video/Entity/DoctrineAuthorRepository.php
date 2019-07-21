@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Api\Infrastructure\Model\Video\Entity;
 
 use Api\Model\EntityNotFoundException;
-use Doctrine\ORM\EntityManagerInterface;
-use Api\Model\Video\Entity\Author\AuthorRepository;
-use Api\Model\Video\Entity\Author\AuthorId;
 use Api\Model\Video\Entity\Author\Author;
+use Api\Model\Video\Entity\Author\AuthorId;
+use Api\Model\Video\Entity\Author\AuthorRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineAuthorRepository implements AuthorRepository
 {
@@ -30,9 +30,7 @@ class DoctrineAuthorRepository implements AuthorRepository
             ->select('COUNT(t.id)')
             ->andWhere('t.id = :id')
             ->setParameter(':id', $id->getId())
-            ->getQuery()
-            ->getSingleScalarResult()
-                > 0;
+            ->getQuery()->getSingleScalarResult() > 0;
     }
 
     public function get(AuthorId $id): Author
@@ -41,7 +39,6 @@ class DoctrineAuthorRepository implements AuthorRepository
         if (!$author = $this->repo->find($id->getId())) {
             throw new EntityNotFoundException('Author is not found.');
         }
-
         return $author;
     }
 

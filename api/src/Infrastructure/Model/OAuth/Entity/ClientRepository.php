@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use Api\Model\OAuth\Entity\ClientEntity;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
 class ClientRepository implements ClientRepositoryInterface
 {
@@ -17,12 +17,8 @@ class ClientRepository implements ClientRepositoryInterface
         $this->clients = $clients;
     }
 
-    public function getClientEntity(
-        $clientIdentifier,
-        $grantType = null,
-        $clientSecret = null,
-        $mustValidateSecret = true
-    ): ?ClientEntityInterface {
+    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true): ?ClientEntityInterface
+    {
         if (array_key_exists($clientIdentifier, $this->clients) === false) {
             return null;
         }

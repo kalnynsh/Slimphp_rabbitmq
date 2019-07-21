@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Api\Model\OAuth\Entity;
 
-use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
-use League\OAuth2\Server\Entities\Traits\EntityTrait;
-use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Entities\Traits\EntityTrait;
+use League\OAuth2\Server\Entities\Traits\RefreshTokenTrait;
 
 /**
  * @ORM\Entity
@@ -27,12 +27,7 @@ class RefreshTokenEntity implements RefreshTokenEntityInterface
     /**
      * @var AccessTokenEntityInterface
      * @ORM\ManyToOne(targetEntity="AccessTokenEntity")
-     * @ORM\JoinColumn(
-     *  name="access_token_identifier",
-     *  referencedColumnName="identifier",
-     *  nullable=false,
-     *  onDelete="CASCADE"
-     * )
+     * @ORM\JoinColumn(name="access_token_identifier", referencedColumnName="identifier", nullable=false, onDelete="CASCADE")
      */
     protected $accessToken;
 

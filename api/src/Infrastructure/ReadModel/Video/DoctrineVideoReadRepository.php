@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace Api\Infrastructure\ReadModel\Video;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Api\ReadModel\Video\VideoReadRepository;
 use Api\Model\Video\Entity\Video\Video;
+use Api\ReadModel\Video\VideoReadRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineVideoReadRepository implements VideoReadRepository
 {
     /**
-     * @var \Doctrine\ORM\Entity\EntityRepository
+     * @var \Doctrine\ORM\EntityRepository
      */
     private $repo;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $em;
 
     public function __construct(EntityManagerInterface $em)
@@ -28,23 +24,15 @@ class DoctrineVideoReadRepository implements VideoReadRepository
 
     public function find(string $authorId, string $id): ?Video
     {
-        return $this
-            ->repo
-            ->findOneBy([
-                'author' => $authorId,
-                'id' => $id
-            ]);
+        return $this->repo->findOneBy(['author' => $authorId, 'id' => $id]);
     }
 
     public function allByAuthor(string $authorId): array
     {
-        return $this
-            ->repo
-            ->createQueryBuilder('v')
+        return $this->repo->createQueryBuilder('v')
             ->andWhere('v.author = :author')
             ->setParameter(':author', $authorId)
             ->orderBy('v.createDate', 'desc')
-            ->getQuery()
-            ->getResult();
+            ->getQuery()->getResult();
     }
 }
