@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Api\Model\Video\Entity\Video;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Api\Model\Video\Entity\Video\Thumbnail;
 use Api\Model\Video\Entity\Video\File;
 use Api\Model\Video\Entity\Video\Event\VideoRemoved;
 use Api\Model\Video\Entity\Video\Event\VideoPublished;
+use Api\Model\Video\Entity\Video\Event\VideoFileAdded;
 use Api\Model\Video\Entity\Video\Event\VideoCreated;
 use Api\Model\Video\Entity\Author\Author;
 use Api\Model\EventTrait;
 use Api\Model\AggregateRoot;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Video class
@@ -138,8 +139,15 @@ class Video implements AggregateRoot
         string $format,
         Size $size
     ): void {
-        $this->files->add(
-            new File($this, $path, $format, $size)
+        $file = new File($this, $path, $format, $size);
+        $this->files->add($file);
+
+        $this->recordEvent(
+            new VideoFileAdded(
+                $this->id,
+                $this->author->getId(),
+                $file
+            )
         );
     }
 

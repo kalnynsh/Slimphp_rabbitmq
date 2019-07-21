@@ -37,7 +37,7 @@ class ConsumeCommand extends Command
 
         $this->config->setGroupId('demo');
         $this->config->setTopics(['notifications']);
-        $this->config->setOffsetReset('earliest');
+        $this->config->setOffsetReset('latest');  // 'latest' | 'earliest'
 
         $consumer = new Consumer();
         $consumer->setLogger($this->logger);
