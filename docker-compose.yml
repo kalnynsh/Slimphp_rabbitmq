@@ -37,6 +37,8 @@ services:
         depends_on:
             - api-postgres
             - mailer
+            - kafka
+            - rabbitmq
 
     api-php-cli:
         build:
@@ -48,6 +50,8 @@ services:
         depends_on:
             - api-postgres
             - mailer
+            - kafka
+            - rabbitmq
         working_dir: /var/www/api
         tty: true
 
@@ -69,6 +73,22 @@ services:
             - "1025:1025"
             - "8092:8025"
 
+    zookeeper:
+        image: wurstmeister/zookeeper
+        ports:
+            - "2181:2181"
+
+    kafka:
+        image: wurstmeister/kafka
+        ports:
+            - "9092:9092"
+        depends_on:
+            - zookeeper
+        environment:
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_CREATE_TOPICS: notifications:1:1
+            KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+
     storage-nginx:
         build:
             context: ./storage/docker
@@ -77,3 +97,24 @@ services:
             - ./storage:/var/www/storage
         ports:
             - "8093:80"
+
+    websocket-nodejs:
+        image: node:10.11-jessie
+        volumes:
+            - ./websocket:/var/www/websocket
+        ports:
+            - "8094:8000"
+        working_dir: /var/www/websocket
+        tty: true
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        environment:
+            RABBITMQ_ERLANG_COOKIE: KEUFTCIRHITVZYPIOPZX
+            RABBITMQ_DEFAULT_USER: rabbit
+            RABBITMQ_DEFAULT_PASS: rabbit
+        ports:
+            - "8095:15672"
+            - "5672:5672"
+        volumes:
+            - ./rabbitmq/docker/enabled_plugins:/etc/rabbitmq/enabled_plugins
