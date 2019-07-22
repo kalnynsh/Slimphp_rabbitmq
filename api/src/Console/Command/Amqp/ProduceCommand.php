@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Command\Command;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Api\Infrastructure\Amqp\AMQPHelper;
 
 class ProduceCommand extends Command
 {
@@ -34,15 +35,15 @@ class ProduceCommand extends Command
     ) {
         $output->writeln('<comment>Produce messages</comment>');
 
-        $exchange = 'notifications';
-        $queue = 'messages';
-
         $connection = $this->connection;
         $channel = $connection->channel();
 
-        $channel->queue_declare($queue, false, false, false, false);
-        $channel->exchange_declare($exchange, 'fanout', false, false, false);
-        $channel->queue_bind($queue, $exchange);
+        AMQPHelper::initNotificatios($channel);
+
+        AMQPHelper::registerShutdown(
+            $connection,
+            $channel
+        );
 
         $data = [
             'type' => 'notification',
@@ -55,11 +56,7 @@ class ProduceCommand extends Command
             ['content_type' => 'text/plain']
         );
 
-        $channel->basic_publish($message, $exchange);
-
-        $channel->close();
-        $connection->close();
-
+        $channel->basic_publish($message,  AMQPHelper::EXCHANGE_NOTIFICATIONS);
         $output->writeln('<info>Done!</info>');
     }
 }

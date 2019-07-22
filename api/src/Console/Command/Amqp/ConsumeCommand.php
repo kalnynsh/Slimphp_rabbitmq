@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Command\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Channel\AMQPChannel;
+use Api\Infrastructure\Amqp\AMQPHelper;
 
 class ConsumeCommand extends Command
 {
@@ -31,20 +32,19 @@ class ConsumeCommand extends Command
     ) {
         $output->writeln('<comment>Consume messages</comment>');
 
-        $exchange = 'notifications';
-        $queue = 'messages';
-
         $connection = $this->connection;
         $channel = $connection->channel();
-
-        $channel->queue_declare($queue, false, false, false, false);
-        $channel->exchange_declare($exchange, 'fanout', false, false, false);
-        $channel->queue_bind($queue, $exchange);
-
         $consumerTag = 'consumer_' . getmypid();
 
+        AMQPHelper::initNotificatios($channel);
+
+        AMQPHelper::registerShutdown(
+            $connection,
+            $channel
+        );
+
         $channel->basic_consume(
-            $queue,
+            AMQPHelper::QUEUE_NOTIFICATIONS,
             $consumerTag,
             false,
             false,
@@ -57,15 +57,6 @@ class ConsumeCommand extends Command
                 $channel = $message->delivery_info['channel'];
                 $channel->basic_ack($message->delivery_info['delivery_tag']);
             }
-        );
-
-        register_shutdown_function(
-            function (AMQPChannel $channel, AMQPStreamConnection $connection) {
-                $channel->close();
-                $connection->close();
-            },
-            $channel,
-            $connection
         );
 
         while ((bool)\count($channel->callbacks)) {
